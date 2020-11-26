@@ -1,0 +1,144 @@
+##########################################################
+##    Benchmarking sequential read/write performance    ##
+##########################################################
+
+Started at
+Sat Jun 17 08:13:04 UTC 2017
+
+1000 * 512 B files
+
+WRITE rate
+1000+0 records in
+1000+0 records out
+512000 bytes (512 kB) copied, 0.776965 s, 659 kB/s
+
+READ rate
+vm.drop_caches = 3
+1000+0 records in
+1000+0 records out
+512000 bytes (512 kB) copied, 0.00498998 s, 103 MB/s
+---------------------------------------------------------
+10 000 * 8 KB files
+
+WRITE rate
+10240+0 records in
+10240+0 records out
+83886080 bytes (84 MB) copied, 11.3905 s, 7.4 MB/s
+
+READ rate
+vm.drop_caches = 3
+10240+0 records in
+10240+0 records out
+83886080 bytes (84 MB) copied, 0.26743 s, 314 MB/s
+---------------------------------------------------------
+256 * 1 MB files
+
+WRITE rate
+256+0 records in
+256+0 records out
+268435456 bytes (268 MB) copied, 1.84723 s, 145 MB/s
+
+READ rate
+vm.drop_caches = 3
+256+0 records in
+256+0 records out
+268435456 bytes (268 MB) copied, 1.0499 s, 256 MB/s
+---------------------------------------------------------
+64 MB file
+
+WRITE rate
+1+0 records in
+1+0 records out
+67108864 bytes (67 MB) copied, 0.426612 s, 157 MB/s
+
+READ rate
+vm.drop_caches = 3
+1+0 records in
+1+0 records out
+67108864 bytes (67 MB) copied, 0.124297 s, 540 MB/s
+---------------------------------------------------------
+400 MB file
+
+WRITE rate
+1+0 records in
+1+0 records out
+419430400 bytes (419 MB) copied, 2.31327 s, 181 MB/s
+
+READ rate
+vm.drop_caches = 3
+1+0 records in
+1+0 records out
+419430400 bytes (419 MB) copied, 1.1432 s, 367 MB/s
+---------------------------------------------------------
+##########################################################
+##         Benchmarking random I/O performance          ##
+##########################################################
+
+Random read performance
+fio-test1: (g=0): rw=randread, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=64
+fio-2.1.5
+Starting 1 process
+fio-test1: Laying out IO file(s) (1 file(s) / 1024MB)
+Jobs: 1 (f=1): [r] [100.0% done] [71808KB/0KB/0KB /s] [17.1K/0/0 iops] [eta 00m:00s]
+fio-test1: (groupid=0, jobs=1): err= 0: pid=1831: Sat Jun 17 12:13:51 2017
+  read : io=1024.0MB, bw=49752KB/s, iops=12438, runt= 21076msec
+  cpu          : usr=3.07%, sys=13.61%, ctx=101143, majf=0, minf=71
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=0.1%, >=64=100.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued    : total=r=262144/w=0/d=0, short=r=0/w=0/d=0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: io=1024.0MB, aggrb=49752KB/s, minb=49752KB/s, maxb=49752KB/s, mint=21076msec, maxt=21076msec
+
+Disk stats (read/write):
+  xvda1: ios=258339/0, merge=1981/0, ticks=1332292/0, in_queue=1332352, util=99.57%
+---------------------------------------------------------
+Random write performance
+fio-test2: (g=0): rw=randwrite, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=64
+fio-2.1.5
+Starting 1 process
+fio-test2: Laying out IO file(s) (1 file(s) / 1024MB)
+Jobs: 1 (f=1): [w] [94.1% done] [0KB/61896KB/0KB /s] [0/15.5K/0 iops] [eta 00m:01s]
+fio-test2: (groupid=0, jobs=1): err= 0: pid=1835: Sat Jun 17 12:14:07 2017
+  write: io=1024.0MB, bw=65581KB/s, iops=16395, runt= 15989msec
+  cpu          : usr=11.78%, sys=52.24%, ctx=194445, majf=0, minf=8
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=0.1%, >=64=100.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued    : total=r=0/w=262144/d=0, short=r=0/w=0/d=0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+  WRITE: io=1024.0MB, aggrb=65581KB/s, minb=65581KB/s, maxb=65581KB/s, mint=15989msec, maxt=15989msec
+
+Disk stats (read/write):
+  xvda1: ios=1/257930, merge=0/2151, ticks=0/198792, in_queue=198672, util=93.05%
+---------------------------------------------------------
+Random read/write performance using a 75%/25% (ie 3 reads are performed for every 1 write)
+fio-test3: (g=0): rw=randrw, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=64
+fio-2.1.5
+Starting 1 process
+fio-test3: Laying out IO file(s) (1 file(s) / 1024MB)
+Jobs: 1 (f=1): [m] [90.0% done] [88264KB/29532KB/0KB /s] [22.7K/7383/0 iops] [eta 00m:01s]
+fio-test3: (groupid=0, jobs=1): err= 0: pid=1902: Sat Jun 17 12:14:22 2017
+  read : io=784996KB, bw=80356KB/s, iops=20088, runt=  9769msec
+  write: io=263580KB, bw=26981KB/s, iops=6745, runt=  9769msec
+  cpu          : usr=8.19%, sys=27.60%, ctx=32330, majf=0, minf=7
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=0.1%, >=64=100.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued    : total=r=196249/w=65895/d=0, short=r=0/w=0/d=0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: io=784996KB, aggrb=80355KB/s, minb=80355KB/s, maxb=80355KB/s, mint=9769msec, maxt=9769msec
+  WRITE: io=263580KB, aggrb=26981KB/s, minb=26981KB/s, maxb=26981KB/s, mint=9769msec, maxt=9769msec
+
+Disk stats (read/write):
+  xvda1: ios=192691/64928, merge=853/97, ticks=448980/147368, in_queue=600452, util=99.04%
+---------------------------------------------------------
+
+Ended at
+Sat Jun 17 08:14:22 UTC 2017
